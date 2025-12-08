@@ -15,13 +15,6 @@
 
 이 프로젝트의 학습 파이프라인을 실행하기 위해서는 **NVIDIA GPU**와 **Windows** 환경이 권장됩니다.
 
-### 0. Unity 프로젝트 준비
-이 프로젝트는 **UnityGaussianSplatting**을 기반으로 합니다. 원본 리포지토리를 Clone 하여 시작할 수 있습니다.
-
-```bash
-git clone https://github.com/aras-p/UnityGaussianSplatting.git
-```
-
 ### 1. 필수 요구사항
 *   **Python 3.8 이상**: [Python 다운로드](https://www.python.org/downloads/)
 *   **CUDA Toolkit (11.8 또는 12.1 권장)**: [CUDA 다운로드](https://developer.nvidia.com/cuda-downloads)
@@ -57,6 +50,49 @@ python run_full_pipeline.py --video_path <비디오_경로> --output_path <결�
 ### Unity에서 확인
 학습된 `.ply` 파일이나 `.splat` 파일을 Unity 프로젝트의 `Assets/StreamingAssets` 또는 지정된 경로로 가져와 시각화할 수 있습니다.
 
+
+## 🛠️ 단계별 실행 가이드 (Advanced Usage)
+전체 파이프라인을 한 번에 실행하지 않고, 각 단계를 개별적으로 제어하고 싶다면 아래 명령어들을 참고하세요.
+
+### 1. 동영상에서 프레임 추출
+동영상에서 학습에 사용할 이미지를 추출합니다.
+
+```bash
+cd Training
+# 10프레임마다 1장 추출 (interval=10)
+python extract_frames.py --video "C:/path/to/video.mp4" --output "./projects/my_project" --interval 10
+```
+
+### 2. COLMAP SfM 처리
+추출된 이미지를 사용하여 카메라 포즈를 추정합니다. COLMAP이 설치되어 있어야 합니다.
+
+```bash
+# --data 경로는 'input' 폴더가 있는 상위 폴더를 지정해야 합니다.
+python run_colmap.py --data "./projects/my_project" --colmap-path "C:/path/to/colmap.exe"
+```
+
+### 3. Gaussian Splatting 학습
+COLMAP 처리 결과를 바탕으로 3D Gaussian Splatting 모델을 학습합니다.
+
+```bash
+# --source_path는 COLMAP 처리가 완료된 폴더 경로입니다.
+python train_gaussian.py --source_path "./projects/my_project" --iterations 30000
+```
+*   `iterations`: 학습 반복 횟수 (기본값: 30000)
+    *   빠른 테스트: 7,000 ~ 10,000
+    *   고품질: 30,000 이상
+
 ## ⚠️ 주의사항
+* 이 프로젝트는 **UnityGaussianSplatting**을 기반으로 합니다. 원본 리포지토리를 Clone 하여 시작할 수 있습니다.
+```bash
+git clone https://github.com/aras-p/UnityGaussianSplatting.git
+```
+* gaussian-splatting 서브모듈 설치 참고
+```bash
+$env:CUDA_HOME = "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.4"; conda activate gaussian_splatting;
+pip install --no-build-isolation submodules/diff-gaussian-rasterization
+pip install --no-build-isolation submodules/simple-knn submodules/fused-ssim
+python -c "from diff_gaussian_rasterization import GaussianRasterizer; from simple_knn._C import distCUDA2; import fused_ssim; print('모든 모듈 import 성공!')"
+```
 *   학습 데이터와 결과물(`output/`, `projects/`)은 용량이 크기 때문에 `.gitignore`에 등록되어 GitHub에 업로드되지 않습니다.
 *   `gaussian-splatting` 폴더는 학습 시 자동으로 클론되거나 생성되므로 저장소에서 제외되어 있습니다.
