@@ -301,8 +301,149 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1462254335}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.039000556, y: -0.42679158, z: 0.0026308782, w: -0.90350485}
-  m_LocalPosition: {x: -3.0026817, y: -0.82006466, z: -2.501085}
+  m_LocalRotation: {x: 0.08960757, y: 0.22150558, z: 0.06447494, w: 0.96889055}
+  m_LocalPosition: {x: -26, y: 5.4, z: -45}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 8.342, y: 26.455, z: 9.578}
+--- !u!1 &1494600965
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1494600967}
+  - component: {fileID: 1494600966}
+  m_Layer: 0
+  m_Name: GSCameraLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1494600966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494600965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 720abe9fe38f943429a9f6757f80b945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jsonFilePath: D:/Project/GaussianSplatting/projects/GaussianExample/Assets/Script/Cameras/20250701_125100_cameras.json
+  targetCamera: {fileID: 1462254337}
+  positionScale: {x: 1, y: -1, z: 1}
+  loadedCameras:
+  - id: 0
+    img_name: frame_00041.jpg
+    width: 0
+    height: 0
+    position: {x: 3.0569441, y: 0.7696147, z: -4.612971}
+    rotationMatrix:
+      e00: 0.9985844
+      e01: 0.046221264
+      e02: 0.02632081
+      e03: 0
+      e10: -0.04465714
+      e11: 0.9973636
+      e12: -0.057197504
+      e13: 0
+      e20: -0.028895158
+      e21: 0.055941124
+      e22: 0.9980159
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    fov: 0
+  - id: 1
+    img_name: frame_00045.jpg
+    width: 0
+    height: 0
+    position: {x: 1.0989835, y: 0.38879746, z: -2.1450894}
+    rotationMatrix:
+      e00: 0.97783995
+      e01: 0.053186495
+      e02: 0.20248523
+      e03: 0
+      e10: -0.04337148
+      e11: 0.9976729
+      e12: -0.05260809
+      e13: 0
+      e20: -0.20481208
+      e21: 0.04266021
+      e22: 0.97787124
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    fov: 0
+  - id: 2
+    img_name: frame_00053.jpg
+    width: 0
+    height: 0
+    position: {x: -1.8984437, y: -0.4918832, z: 3.0227172}
+    rotationMatrix:
+      e00: 0.82267874
+      e01: 0.046783548
+      e02: 0.56657827
+      e03: 0
+      e10: -0.030863158
+      e11: 0.99881387
+      e12: -0.03766045
+      e13: 0
+      e20: -0.56766814
+      e21: 0.013496057
+      e22: 0.8231468
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    fov: 0
+  - id: 3
+    img_name: frame_00054.jpg
+    width: 0
+    height: 0
+    position: {x: -2.257484, y: -0.66652894, z: 3.735343}
+    rotationMatrix:
+      e00: 0.7879196
+      e01: 0.043188773
+      e02: 0.61426175
+      e03: 0
+      e10: -0.029501565
+      e11: 0.9990395
+      e12: -0.032400567
+      e13: 0
+      e20: -0.61507106
+      e21: 0.0074073584
+      e22: 0.7884369
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    fov: 0
+  selectedIndex: 0
+--- !u!4 &1494600967
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494600965}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -13.496078, y: -12.281655, z: 12.4387455}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -374,3 +515,4 @@ SceneRoots:
   - {fileID: 231550835}
   - {fileID: 1609192435}
   - {fileID: 1462254338}
+  - {fileID: 1494600967}
