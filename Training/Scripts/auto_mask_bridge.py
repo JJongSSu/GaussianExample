@@ -9,13 +9,20 @@ import torch
 def process_images(input_dir, output_dir, prompt="concrete bridge"):
     print(f"Initializing models... (Prompt: '{prompt}')")
 
+    # 모델 경로 설정 (Scripts 폴더의 상위 폴더인 Training 아래 Models 폴더 참조)
+    script_dir = Path(__file__).resolve().parent
+    model_dir = script_dir.parent / "Models"
+    
+    yolo_path = model_dir / 'yolov8x-worldv2.pt'
+    sam_path = model_dir / 'sam_b.pt'
+
     # 1. YOLO-World 로드 (텍스트로 객체 위치 탐지)
     # 처음 실행 시 모델 파일을 자동으로 다운로드합니다.
-    det_model = YOLOWorld('yolov8x-worldv2.pt')
+    det_model = YOLOWorld(str(yolo_path))
     det_model.set_classes([prompt])
 
     # 2. SAM 로드 (박스 기반 정밀 마스킹)
-    seg_model = SAM('sam_b.pt')
+    seg_model = SAM(str(sam_path))
 
     os.makedirs(output_dir, exist_ok=True)
     input_path = Path(input_dir)

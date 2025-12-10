@@ -44,7 +44,7 @@ echo.
 echo ============================================================
 echo Step 1/3: 프레임 추출
 echo ============================================================
-python extract_frames.py --video "!VIDEO_PATH!" --output "!OUTPUT_DIR!" --interval 10 --max-frames 300 --resize-width 1920
+python Scripts/extract_frames.py --video "!VIDEO_PATH!" --output "!OUTPUT_DIR!" --interval 10 --max-frames 300 --resize-width 1920
 
 if errorlevel 1 (
     echo [오류] 프레임 추출 실패
@@ -56,7 +56,7 @@ echo.
 echo ============================================================
 echo Step 2/3: COLMAP 전처리
 echo ============================================================
-python run_colmap.py --data "!OUTPUT_DIR!" --colmap-path "!COLMAP_PATH!"
+python Scripts/run_colmap.py --data "!OUTPUT_DIR!" --colmap-path "!COLMAP_PATH!"
 
 if errorlevel 1 (
     echo [오류] COLMAP 전처리 실패
@@ -68,7 +68,7 @@ echo.
 echo ============================================================
 echo Step 3/3: 3D Gaussian Splatting 학습
 echo ============================================================
-python train_gaussian.py --source_path "!OUTPUT_DIR!" --gs_path ".\gaussian-splatting" --iterations 15000 -r 2
+python Scripts/train_gaussian.py --source_path "!OUTPUT_DIR!" --gs_path ".\gaussian-splatting" --iterations 15000 -r 2
 
 if errorlevel 1 (
     echo [오류] 학습 실패

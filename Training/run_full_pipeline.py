@@ -96,7 +96,7 @@ def main():
         print("STEP 1/3: 프레임 추출")
         print("=" * 70)
         
-        from extract_frames import extract_frames
+        from Scripts.extract_frames import extract_frames
         extract_frames(
             video_path=args.video,
             output_dir=str(output_path),
@@ -113,7 +113,7 @@ def main():
         print("STEP 2/3: COLMAP 전처리")
         print("=" * 70)
         
-        from run_colmap import run_colmap_preprocessing
+        from Scripts.run_colmap import run_colmap_preprocessing
         run_colmap_preprocessing(
             data_dir=str(output_path),
             colmap_path=args.colmap_path,
@@ -128,7 +128,7 @@ def main():
         print("STEP 3/3: 3D Gaussian Splatting 학습")
         print("=" * 70)
         
-        from train_gaussian import run_training, check_gaussian_splatting_repo, clone_gaussian_splatting, setup_gaussian_splatting
+        from Scripts.train_gaussian import run_training, check_gaussian_splatting_repo, clone_gaussian_splatting, setup_gaussian_splatting
         
         gs_path = Path(args.gs_path).resolve()
         
