@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.akiojin.unity-mcp-server": "https://github.com/akiojin/unity-mcp-server.git?path=UnityMCPServer/Packages/unity-mcp-server",
     "com.boxqkrtm.ide.cursor": "https://github.com/boxqkrtm/com.unity.ide.cursor.git",
     "com.unity.ai.inference": "2.2.2",
     "com.unity.ide.rider": "3.0.38",

@@ -1,60 +1,70 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Unity.InferenceEngine; // 사용자가 설정한 네임스페이스 유지
+using Unity.InferenceEngine;
 
 public class YoloDetector : MonoBehaviour
 {
     [Header("Model Settings")]
     public ModelAsset yoloModelAsset;
-    public TextAsset labelFile; // 클래스 이름이 적힌 txt 파일
+    public TextAsset labelFile;
     public float confidenceThreshold = 0.5f;
     public float iouThreshold = 0.4f;
 
     [Header("Input Settings")]
     public Vector2Int inputResolution = new Vector2Int(640, 640);
 
+    [Header("Backend")]
+    [Tooltip("CPU backend recommended on mobile to avoid GPU contention with Gaussian Splatting")]
+    public BackendType backendType = BackendType.CPU;
+
     private Model runtimeModel;
     private Worker worker;
     private string[] labels;
+    private bool m_Initialized;
 
-    // 감지 결과를 담을 구조체
     public struct DetectionResult
     {
-        public Rect box;      // 정규화된 박스 좌표 (0~1)
-        public float score;   // 신뢰도
-        public int classIndex; // 클래스 인덱스
-        public string label;   // 클래스 이름 (예: "Bridge")
+        public Rect box;       // normalized box coordinates (0~1)
+        public float score;    // confidence
+        public int classIndex;
+        public string label;
     }
+
+    public bool isInitialized => m_Initialized;
 
     void Start()
     {
+        Initialize();
+    }
+
+    public void Initialize()
+    {
+        if (m_Initialized) return;
+
         if (yoloModelAsset == null)
         {
-            Debug.LogError("YOLO ONNX 모델을 할당해주세요.");
+            Debug.LogError("[YoloDetector] ONNX model asset not assigned.");
             return;
         }
 
-        // 라벨 파일 로드
         if (labelFile != null)
         {
             labels = labelFile.text.Split(new char[] { '\n', '\r' }, System.StringSplitOptions.RemoveEmptyEntries);
         }
         else
         {
-            Debug.LogWarning("라벨 파일이 없습니다. 기본값 'Object'를 사용합니다.");
+            Debug.LogWarning("[YoloDetector] No label file. Using default 'Object'.");
             labels = new string[] { "Object" };
         }
 
-        // 모델 로드
         runtimeModel = ModelLoader.Load(yoloModelAsset);
-
-        // GPU 가속
-        worker = new Worker(runtimeModel, BackendType.GPUCompute);
+        worker = new Worker(runtimeModel, backendType);
+        m_Initialized = true;
     }
 
     public List<DetectionResult> Detect(Texture inputTexture)
     {
-        if (worker == null) return new List<DetectionResult>();
+        if (!m_Initialized || worker == null) return new List<DetectionResult>();
 
         // 1. 전처리
         using Tensor<float> inputTensor = TextureConverter.ToTensor(inputTexture, inputResolution.x, inputResolution.y, 3);
