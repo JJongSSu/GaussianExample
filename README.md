@@ -82,6 +82,40 @@ python train_gaussian.py --source_path "./projects/my_project" --iterations 3000
     *   빠른 테스트: 7,000 ~ 10,000
     *   고품질: 30,000 이상
 
+## 📦 포함된 데이터셋 (Included Datasets)
+
+`Training/projects/` 아래에 교각(다리) 촬영 영상으로부터 추출한 데이터셋이 포함되어 있습니다.
+각 데이터셋 폴더에는 **원본 추출 프레임(`input/`)만 커밋**되어 있고, 나머지 산출물은 아래 절차로 **재생성**해야 합니다.
+
+| 데이터셋 | input 프레임 수 | 크기 | 비고 |
+|---|---|---|---|
+| `Training/projects/20250701_124952/` | 64장 | ~85 MB | 교각 촬영 데이터 1 |
+| `Training/projects/20250701_125100/` | 62장 | ~86 MB | 교각 촬영 데이터 2 |
+
+### 데이터셋 재구성 절차 (input → output)
+
+`input/`만 있는 상태에서 학습까지 진행하려면 다음 순서로 실행합니다.
+실행 시 각 데이터셋 폴더 안에 아래의 산출물들이 자동으로 생성됩니다.
+
+#### 1) COLMAP SfM 실행 → `distorted/`, `sparse/`, `stereo/`, `images/`, `database.db`, `run-colmap-*.sh` 생성
+```bash
+cd Training
+# 또는 gaussian-splatting의 convert.py 직접 호출
+python gaussian-splatting/convert.py -s ./projects/20250701_124952
+python gaussian-splatting/convert.py -s ./projects/20250701_125100
+```
+*   `convert.py`는 `<폴더>/input/`의 이미지로 feature extraction → matching → mapper → image undistortion 순서로 처리합니다.
+*   결과로 생성되는 `distorted/`, `sparse/`, `stereo/`, `images/`, `database.db`, `run-colmap-*.sh`는 모두 `.gitignore`로 제외되어 있습니다.
+
+#### 2) 3D Gaussian Splatting 학습 → `output/` 생성
+```bash
+python train_gaussian.py --source_path "./projects/20250701_124952" --iterations 30000
+python train_gaussian.py --source_path "./projects/20250701_125100" --iterations 30000
+```
+*   학습 결과인 `output/<run_id>/point_cloud/iteration_*/point_cloud.ply`는 수백 MB 이상이 될 수 있어 `.gitignore`로 제외되어 있습니다.
+
+> 💡 위 두 단계를 묶어서 `run_full_pipeline.py` 또는 `run_pipeline.bat`로 한 번에 실행할 수도 있습니다.
+
 ## ⚠️ 주의사항
 * 이 프로젝트는 **UnityGaussianSplatting**을 기반으로 합니다. 원본 리포지토리를 Clone 하여 시작할 수 있습니다.
 ```bash
@@ -95,5 +129,5 @@ pip install --no-build-isolation submodules/diff-gaussian-rasterization
 pip install --no-build-isolation submodules/simple-knn submodules/fused-ssim
 python -c "from diff_gaussian_rasterization import GaussianRasterizer; from simple_knn._C import distCUDA2; import fused_ssim; print('모든 모듈 import 성공!')"
 ```
-*   학습 데이터와 결과물(`output/`, `projects/`)은 용량이 크기 때문에 `.gitignore`에 등록되어 GitHub에 업로드되지 않습니다.
+*   학습 데이터의 **원본 `input/` 이미지만** GitHub에 업로드되고, COLMAP 산출물(`distorted/`, `sparse/`, `stereo/`, `images/`, `*.db`, `*.sh`, `undistorted/`)과 학습 결과(`output/`, `*.ply`, `*.splat`)는 용량이 크기 때문에 `.gitignore`에 등록되어 제외됩니다.
 *   `gaussian-splatting` 폴더는 학습 시 자동으로 클론되거나 생성되므로 저장소에서 제외되어 있습니다.

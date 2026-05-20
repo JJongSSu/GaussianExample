@@ -72,8 +72,15 @@ output/
 datasets/
 
 # Specific Training/ Project Paths
+# 프로젝트 폴더는 기본적으로 무시하되, 각 프로젝트의 원본 input/ 이미지만 추적합니다.
+# distorted/, sparse/, stereo/, images/, output/, *.db, *.sh 등은 convert.py/train으로 재생성 가능합니다.
 Training/projects/*
 !Training/projects/.gitkeep
+!Training/projects/*/
+Training/projects/*/*
+!Training/projects/*/input/
+!Training/projects/*/input/**
+
 Training/gaussian-splatting/*
 !Training/gaussian-splatting/.gitkeep
 Training/video/*
