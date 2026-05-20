@@ -82,6 +82,20 @@ python train_gaussian.py --source_path "./projects/my_project" --iterations 3000
     *   빠른 테스트: 7,000 ~ 10,000
     *   고품질: 30,000 이상
 
+## 📁 학습용 동영상 위치 (Training Videos)
+
+학습할 원본 동영상은 `Training/video/` 폴더에 두세요. 이 폴더는 용량이 크기 때문에 `.gitignore`로 제외되어 있어 GitHub에는 업로드되지 않습니다 (`.gitkeep`만 유지).
+
+```
+Training/video/
+├── .gitkeep              # 폴더 유지용 (수정/삭제 금지)
+├── my_video_1.mp4        # 사용자가 직접 추가
+├── my_video_2.mp4
+└── ...
+```
+
+`run_pipeline.bat` 파일 13행의 `VIDEO_PATH` 절대경로는 사용자 환경에 맞게 수정해서 쓰세요.
+
 ## 📦 포함된 데이터셋 (Included Datasets)
 
 `Training/projects/` 아래에 교각(다리) 촬영 영상으로부터 추출한 데이터셋이 포함되어 있습니다.

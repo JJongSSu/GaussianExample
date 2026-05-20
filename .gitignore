@@ -84,6 +84,7 @@ Training/projects/*/*
 Training/gaussian-splatting/*
 !Training/gaussian-splatting/.gitkeep
 Training/video/*
+!Training/video/.gitkeep
 
 # Temporary Assets
 Assets/GaussianAssets/*
