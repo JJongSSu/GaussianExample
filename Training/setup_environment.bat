@@ -38,14 +38,26 @@ echo.
 echo [5/5] gaussian-splatting 서브모듈 설치...
 cd gaussian-splatting
 
-if exist "./gaussian-splatting/submodules/diff-gaussian-rasterization" (
+REM gaussian-splatting 폴더 내부 기준 상대경로 (cd 한 직후)
+if exist ".\submodules\diff-gaussian-rasterization\setup.py" (
     echo diff-gaussian-rasterization 설치 중...
-    pip install ./gaussian-splatting/submodules/diff-gaussian-rasterization --no-build-isolation
+    pip install .\submodules\diff-gaussian-rasterization --no-build-isolation
+) else (
+    echo [경고] submodules\diff-gaussian-rasterization 가 없습니다. 'git submodule update --init --recursive' 를 실행하세요.
 )
 
-if exist "./gaussian-splatting/submodules/simple-knn" (
+if exist ".\submodules\simple-knn\setup.py" (
     echo simple-knn 설치 중...
-    pip install ./gaussian-splatting/submodules/simple-knn --no-build-isolation
+    pip install .\submodules\simple-knn --no-build-isolation
+) else (
+    echo [경고] submodules\simple-knn 가 없습니다.
+)
+
+if exist ".\submodules\fused-ssim\setup.py" (
+    echo fused-ssim 설치 중...
+    pip install .\submodules\fused-ssim --no-build-isolation
+) else (
+    echo [정보] submodules\fused-ssim 가 없습니다. (선택 사항)
 )
 
 cd ..

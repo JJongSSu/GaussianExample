@@ -60,7 +60,7 @@ python run_full_pipeline.py --video_path <비디오_경로> --output_path <결�
 ```bash
 cd Training
 # 10프레임마다 1장 추출 (interval=10)
-python extract_frames.py --video "C:/path/to/video.mp4" --output "./projects/my_project" --interval 10
+python Scripts/extract_frames.py --video "C:/path/to/video.mp4" --output "./projects/my_project" --interval 10
 ```
 
 ### 2. COLMAP SfM 처리
@@ -68,7 +68,7 @@ python extract_frames.py --video "C:/path/to/video.mp4" --output "./projects/my_
 
 ```bash
 # --data 경로는 'input' 폴더가 있는 상위 폴더를 지정해야 합니다.
-python run_colmap.py --data "./projects/my_project" --colmap-path "C:/path/to/colmap.exe"
+python Scripts/run_colmap.py --data "./projects/my_project" --colmap-path "C:/path/to/colmap.exe"
 ```
 
 ### 3. Gaussian Splatting 학습
@@ -76,7 +76,7 @@ COLMAP 처리 결과를 바탕으로 3D Gaussian Splatting 모델을 학습합�
 
 ```bash
 # --source_path는 COLMAP 처리가 완료된 폴더 경로입니다.
-python train_gaussian.py --source_path "./projects/my_project" --iterations 30000
+python Scripts/train_gaussian.py --source_path "./projects/my_project" --iterations 30000
 ```
 *   `iterations`: 학습 반복 횟수 (기본값: 30000)
     *   빠른 테스트: 7,000 ~ 10,000
@@ -114,17 +114,17 @@ Training/video/
 #### 1) COLMAP SfM 실행 → `distorted/`, `sparse/`, `stereo/`, `images/`, `database.db`, `run-colmap-*.sh` 생성
 ```bash
 cd Training
-# 또는 gaussian-splatting의 convert.py 직접 호출
-python gaussian-splatting/convert.py -s ./projects/20250701_124952
-python gaussian-splatting/convert.py -s ./projects/20250701_125100
+python Scripts/run_colmap.py --data ./projects/20250701_124952
+python Scripts/run_colmap.py --data ./projects/20250701_125100
 ```
-*   `convert.py`는 `<폴더>/input/`의 이미지로 feature extraction → matching → mapper → image undistortion 순서로 처리합니다.
+*   `Scripts/run_colmap.py`는 `<폴더>/input/`의 이미지로 feature extraction → matching → mapper → image undistortion 순서로 처리합니다 (내부적으로 COLMAP 바이너리 호출).
 *   결과로 생성되는 `distorted/`, `sparse/`, `stereo/`, `images/`, `database.db`, `run-colmap-*.sh`는 모두 `.gitignore`로 제외되어 있습니다.
+*   COLMAP 실행 파일 경로 지정이 필요하면 `--colmap-path "C:/path/to/colmap.exe"` 옵션 추가.
 
 #### 2) 3D Gaussian Splatting 학습 → `output/` 생성
 ```bash
-python train_gaussian.py --source_path "./projects/20250701_124952" --iterations 30000
-python train_gaussian.py --source_path "./projects/20250701_125100" --iterations 30000
+python Scripts/train_gaussian.py --source_path "./projects/20250701_124952" --iterations 30000
+python Scripts/train_gaussian.py --source_path "./projects/20250701_125100" --iterations 30000
 ```
 *   학습 결과인 `output/<run_id>/point_cloud/iteration_*/point_cloud.ply`는 수백 MB 이상이 될 수 있어 `.gitignore`로 제외되어 있습니다.
 
